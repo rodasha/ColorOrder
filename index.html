@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8" />
+    <title>色並べ</title>
+    <style>
+        body {
+            height: 800px;
+            width: 800px;
+            display:flex;
+            flex-wrap:wrap;
+            background:skyblue;
+        }
+        .box {
+            height: 50px;
+            width: 50px;
+            transition: 1s;
+        }
+        .delete {
+            transform:scale(0);
+        }
+    </style>
+</head>
+<body>
+    <script>
+        var n = 0, timer, arr = [];
+        for (i = 0; i < 256; i++) arr[i] = 256;
+        for (i = 0; i < 256; i++) {
+            const r = Math.floor(Math.random() * 256);
+            if (arr[r] == 256) arr[r] = i;
+            else i--;
+        }
+        for (let i = 0; i < 256; i++) {
+            const div = document.createElement('div'),
+                color = "rgb(" + arr[i] + "," + arr[i] + "," + arr[i] + ")";
+            div.classList.add('box');
+            div.style.background = color;
+            div.addEventListener('click', () => {
+                if (arr[i] == n) {
+                    div.classList.add('delete'); n++;
+                    document.count.elements[1].value = n + 1;
+                    if (n >= 256) {
+                        const time = parseInt(document.count.elements[0].valu),
+                            miss = parseInt(document.count.elements[2].value);
+                        alert("おめでとうございます！タイムは" + time + "で、ミスは"+miss+"回でした！");
+                    }
+                } else {
+                    var miss = parseInt(document.count.elements[2].value) + 1;
+                    document.count.elements[2].value = miss;
+                } 
+            });
+            document.body.appendChild(div);
+        }
+        timer = setInterval(() => {
+            var sec = parseInt(document.count.elements[0].value) + 1;
+            document.count.elements[0].value = sec;
+        },
+            1000);
+    </script>
+    <form name="count">
+        <input type="text" value="0" readonly />秒
+        今<input type="text" value="1" readonly />個目
+        ミス<input type="text" value="0" redonly />回
+    </form>
+    <h1>ルール　黒の濃い順にクリックしてください。</h1>
+</body>
+</html>
